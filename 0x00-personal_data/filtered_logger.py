@@ -5,8 +5,7 @@ import os
 import re
 import logging
 import mysql.connector
-from typing import List, TypeVar
-from mysql.connector import connect, connection
+from typing import List
 
 
 patterns = {
@@ -46,23 +45,19 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> TypeVar('MySQLConnection'):
-    """Connects to a MySQL database and returns a connection object
-
-    Returns:
-        MySQLConnection: Database connection object
-    """
-    username = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
-
-    return connect(
-        user=username,
-        password=password,
-        host=host,
-        database=db_name
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """Creates a connector to a database."""
+    db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME", "")
+    db_user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    db_pwd = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    connection = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_pwd,
+        database=db_name,
     )
+    return connection
 
 
 def main():
