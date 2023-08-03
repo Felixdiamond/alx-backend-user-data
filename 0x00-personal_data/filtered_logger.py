@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""A module for filtering logs.
-"""
+"""A module for filtering logs."""
+
 import os
 import re
 import logging
 import mysql.connector
 from typing import List
-
 
 patterns = {
     'extract': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
@@ -15,10 +14,18 @@ patterns = {
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
-def filter_datum(
-        fields: List[str], redaction: str, message: str, separator: str,
-        ) -> str:
-    """Filters a log line.
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 separator: str) -> str:
+    """Filters a log line by redacting specified fields.
+
+    Args:
+        fields (List[str]): The fields to redact.
+        redaction (str): The redaction string.
+        message (str): The log line to filter.
+        separator (str): The field separator.
+
+    Returns:
+        str: The filtered log line.
     """
     extract, replace = (patterns["extract"], patterns["replace"])
     return re.sub(extract(fields, separator), replace(redaction), message)
@@ -26,6 +33,9 @@ def filter_datum(
 
 def get_logger() -> logging.Logger:
     """Creates a new logger for user data.
+
+    Returns:
+        logging.Logger: The new logger.
     """
     logger = logging.getLogger("user_data")
     stream_handler = logging.StreamHandler()
@@ -38,6 +48,9 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """Creates a connector to a database.
+
+    Returns:
+        mysql.connector.connection.MySQLConnection: The database connection.
     """
     db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = os.getenv("PERSONAL_DATA_DB_NAME", "")
@@ -54,8 +67,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 
 def main():
-    """Logs the information about user records in a table.
-    """
+    """Logs the information about user records in a table."""
     fields = "name,email,phone,ssn,password,ip,last_login,user_agent"
     columns = fields.split(',')
     query = "SELECT {} FROM users;".format(fields)
@@ -76,8 +88,7 @@ def main():
 
 
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class
-    """
+    """Redacting Formatter class."""
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
@@ -89,7 +100,13 @@ class RedactingFormatter(logging.Formatter):
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        """formats a LogRecord.
+        """Formats a LogRecord by redacting specified fields.
+
+        Args:
+            record (logging.LogRecord): The LogRecord to format.
+
+        Returns:
+            str: The formatted log line.
         """
         msg = super(RedactingFormatter, self).format(record)
         txt = filter_datum(self.fields, self.REDACTION, msg, self.SEPARATOR)
