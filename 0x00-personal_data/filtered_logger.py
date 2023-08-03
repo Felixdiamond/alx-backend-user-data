@@ -15,13 +15,23 @@ patterns = {
 }
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
+    """Obfuscates specified fields in a log message
 
-def filter_datum(
-        fields: List[str], redaction: str, message: str, separator: str,
-) -> str:
-    """Filters a log line."""
-    extract, replace = (patterns["extract"], patterns["replace"])
-    return re.sub(extract(fields, separator), replace(redaction), message)
+    Args:
+        fields (List[str]): List of fields to obfuscate
+        redaction (str): String to replace field values with
+        message (str): Log message
+        separator (str): Field separator
+
+    Returns:
+        str: Obfuscated log message
+    """
+    for field in fields:
+        message = re.sub(f'{field}=[^{separator}]*',
+                         f'{field}={redaction}', message)
+    return message
 
 
 def get_logger() -> logging.Logger:
