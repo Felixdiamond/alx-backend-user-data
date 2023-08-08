@@ -17,7 +17,8 @@ class Auth:
 
         Args:
             path (str): The path to check.
-            excluded_paths (List[str]): A list of paths that do not require authentication.
+            excluded_paths (List[str]): A list of paths
+            that do not require authentication.
 
         Returns:
             bool: True if authentication is required, False otherwise.
@@ -31,7 +32,8 @@ class Auth:
             request (Request): The Flask request object.
 
         Returns:
-            str: The value of the authorization header, or None if it is not present.
+            str: The value of the authorization header,
+            or None if it is not present.
         """
         return None
 
@@ -45,4 +47,3 @@ class Auth:
             User: The current user, or None if there is no current user.
         """
         return None
-
