@@ -6,4 +6,6 @@ from .auth import Auth
 
 
 class BasicAuth(Auth):
+    """ The Basic Authentication Class
+    """
     pass
