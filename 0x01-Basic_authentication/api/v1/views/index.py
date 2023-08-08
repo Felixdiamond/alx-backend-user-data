@@ -25,3 +25,12 @@ def stats() -> str:
     stats['users'] = User.count()
     return jsonify(stats)
 
+@app.route('/api/v1/unauthorized')
+def unauthorized():
+    """ Endpoint that raises a 401 error.
+
+    This endpoint uses the abort function from Flask to raise a
+    401 error, which will trigger the error handler for the
+    401 status code.
+    """
+    abort(401)
