@@ -35,3 +35,14 @@ def unauthorized():
     401 status code.
     """
     abort(401)
+
+
+@app_views.route('/forbidden/', strict_slashes=False)
+def forbidden():
+    """ Endpoint that raises a 403 error.
+
+    This endpoint uses the abort function from Flask to raise a
+    403 error, which will trigger the error handler for the
+    403 status code.
+    """
+    abort(403)
