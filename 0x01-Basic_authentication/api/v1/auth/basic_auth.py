@@ -4,7 +4,7 @@
 
 from .auth import Auth
 import base64
-from typing import Tuple
+from typing import Tuple, TypeVar
 
 from models.user import User
 
