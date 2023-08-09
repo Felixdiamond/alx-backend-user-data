@@ -92,7 +92,7 @@ class BasicAuth(Auth):
             user_pwd: str) -> TypeVar('User'):
         """Retrieves a user based on the user's authentication credentials.
         """
-        if type(user_email) == str and type(user_pwd) == str:
+        if isinstance(user_email, str) and isinstance(user_pwd, str):
             try:
                 users = User.search({'email': user_email})
             except Exception:
