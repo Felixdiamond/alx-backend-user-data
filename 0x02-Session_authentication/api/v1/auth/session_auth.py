@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from models.user import User
 
+
 class SessionAuth(Auth):
     """ The Session Authentication Class
     """
@@ -47,11 +48,11 @@ class SessionAuth(Auth):
     def current_user(self, request=None):
         """Returns a User instance based on a cookie
         value
-    
+
         Args:
             request: The Flask request object to
             retrieve the cookie from
-    
+
         Returns:
             User: The User instance associated with
             the cookie value, or None if not found
