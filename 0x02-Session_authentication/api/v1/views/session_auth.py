@@ -30,4 +30,3 @@ def session_login():
     response = jsonify(user.to_json())
     response.set_cookie(getenv('SESSION_NAME'), session_id)
     return response
-
