@@ -47,6 +47,5 @@ class SessionDBAuth(SessionExpAuth):
 
         for user_session in user_sessions:
             user_session.remove()
-        
-        return True
 
+        return True
