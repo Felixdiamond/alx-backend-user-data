@@ -84,4 +84,4 @@ class Auth:
         if request is None:
             return None
         session_name = getenv("SESSION_NAME")
-        request.cookies.get(session_name)
+        return request.cookies.get(session_name)
