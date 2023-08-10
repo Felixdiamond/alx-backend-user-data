@@ -45,4 +45,3 @@ class SessionExpAuth(SessionAuth):
             return None
 
         return self.user_id_by_session_id[session_id]['user_id']
-
