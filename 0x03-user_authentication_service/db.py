@@ -8,8 +8,6 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
-import bcrypt
-
 from user import Base
 from user import User
 
@@ -66,7 +64,3 @@ class DB:
                 raise ValueError
             setattr(user, key, value)
         self._session.commit()
-
-    def _hash_password(password: str) -> bytes:
-        """Hash a password"""
-        return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
